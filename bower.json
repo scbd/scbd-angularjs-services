@@ -18,5 +18,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+     "angularjs"        : "~1.4.0",
+	 "linqjs"           : "latest",
+     "underscore"       : "latest"
+  }
 }
