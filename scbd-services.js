@@ -1107,7 +1107,7 @@
         //		}();
     }]);
 
-    app.factory('Thesaurus', [function() {
+    app.factory('Thesaurus', ['Enumerable', function(Enumerable) {
 		return {
 			buildTree : function(terms) {
 				var oTerms    = [];
@@ -1148,45 +1148,7 @@
 		}
 	}]);
 
-	app.factory('localization', ["$browser", function($browser) {
-		return {
-			locale: function(newLocale) {
 
-				var internal_SetLocale = function(newLocale) {
-
-					if (!/^[a-z]{2,3}$/.test(newLocale))
-						throw "invalid locale";
-
-					var oExpire = new Date();
-
-					oExpire.setFullYear(oExpire.getFullYear() + 1);
-
-					document.cookie = "Preferences=Locale=" + escape(newLocale) + "; path=/; expires="+oExpire.toGMTString();
-				}
-
-				if (newLocale)
-					internal_SetLocale(newLocale);
-
-				var sPreferences = $browser.cookies().Preferences;
-				var sLocale      = "en";
-				var oLocaleRegex = /;?Locale=([a-z]{2,3});?/
-
-				if (sPreferences && oLocaleRegex.test(sPreferences))
-					sLocale = $browser.cookies().Preferences.replace(oLocaleRegex, "$1");
-				else
-					internal_SetLocale(sLocale);
-
-				return sLocale;
-			}
-		}
-	}]);
-
-    app.filter('localize', function(Localizer) {
-      return function(input) {
-        return Localizer.phrase(input);
-      };
-    });
-    
 	app.factory('guid', function() {
 		function S4() {
 			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
