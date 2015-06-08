@@ -290,6 +290,12 @@
 		};
 	}]);
 
+
+    app.config(['$httpProvider', function($httpProvider){
+        $httpProvider.interceptors.push('authenticationHttpIntercepter');
+        $httpProvider.interceptors.push('realmHttpIntercepter');
+    }]);
+
     app.factory("IWorkflows", ["$http", function($http) {
 
         //===========================
