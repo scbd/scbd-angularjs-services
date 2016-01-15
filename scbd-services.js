@@ -229,7 +229,7 @@
         //
         //============================================================
         function setUser(user) {
-            if (user && !user.IsEmailVerified) {
+            if (user && user.isAuthenticated && !user.isEmailVerified) {
                 $rootScope.$broadcast('event:auth-emailVerification', {
                     message: 'Email verification pending. Please verify you email before submitting any data.'
                 });
