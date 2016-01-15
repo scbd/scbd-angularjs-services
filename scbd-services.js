@@ -229,6 +229,11 @@
         //
         //============================================================
         function setUser(user) {
+            if (user && !user.IsEmailVerified) {
+                $rootScope.$broadcast('event:auth-emailVerification', {
+                    message: 'Email verification pending. Please verify you email before submitting any data.'
+                });
+            }
 
             currentUser = user || undefined;
             $rootScope.user = user || anonymous();
@@ -241,7 +246,7 @@
         };
 
     }]);
-    app.factory('authenticationHttpIntercepter', ["$q", "apiToken", function($q, apiToken) {
+    app.factory('authenticationHttpIntercepter', ["$q", "apiToken", "$rootScope", function($q, apiToken, $rootScope) {
 
         return {
             request: function(config) {
@@ -268,30 +273,43 @@
 
                     return config;
                 });
+            },
+            responseError: function(rejection) {
+
+                if (rejection.data && rejection.data.statusCode == 401) {
+
+                    if (rejection.data.message.indexOf('Email verification pending') >= 0) {
+                        $rootScope.$broadcast('event:auth-emailVerification', rejection.data);
+                    }
+
+                }
+                // otherwise, default behaviour
+                return $q.reject(rejection);
             }
         };
     }]);
 
     app.factory('realmHttpIntercepter', ["realm", function(realm) {
 
-		return {
-			request: function(config) {
+        return {
+            request: function(config) {
 
-				var trusted = /^https:\/\/api.cbd.int\//i .test(config.url) ||
-						      /^https:\/\/localhost[:\/]/i.test(config.url) ||
-							  /^\/\w+/i                   .test(config.url);
+                var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
+                    /^https:\/\/localhost[:\/]/i.test(config.url) ||
+                    /^\/\w+/i.test(config.url);
 
-                if(trusted && realm) {
-                    config.headers = angular.extend(config.headers || {}, { realm : realm.value });
+                if (trusted && realm) {
+                    config.headers = angular.extend(config.headers || {}, {
+                        realm: realm.value || realm
+                    });
                 }
 
                 return config;
-			}
-		};
-	}]);
+            }
+        };
+    }]);
 
-
-    app.config(['$httpProvider', function($httpProvider){
+    app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.interceptors.push('authenticationHttpIntercepter');
         $httpProvider.interceptors.push('realmHttpIntercepter');
     }]);
@@ -1114,54 +1132,54 @@
     }]);
 
     app.factory('Thesaurus', ['Enumerable', function(Enumerable) {
-		return {
-			buildTree : function(terms) {
-				var oTerms    = [];
-				var oTermsMap = {};
+        return {
+            buildTree: function(terms) {
+                var oTerms = [];
+                var oTermsMap = {};
 
-				Enumerable.from(terms).forEach(function(value) {
-					var oTerm = {
-						identifier  : value.identifier,
-						title       : value.title,
-						description : value.description
-					}
+                Enumerable.from(terms).forEach(function(value) {
+                    var oTerm = {
+                        identifier: value.identifier,
+                        title: value.title,
+                        description: value.description
+                    }
 
-					oTerms.push(oTerm);
-					oTermsMap[oTerm.identifier] = oTerm;
-				});
+                    oTerms.push(oTerm);
+                    oTermsMap[oTerm.identifier] = oTerm;
+                });
 
-				for (var i = 0; i < oTerms.length; ++i) {
-					var oRefTerm = terms [i];
-					var oBroader = oTerms[i];
+                for (var i = 0; i < oTerms.length; ++i) {
+                    var oRefTerm = terms[i];
+                    var oBroader = oTerms[i];
 
-					if (oRefTerm.narrowerTerms && oRefTerm.narrowerTerms.length > 0) {
-						angular.forEach(oRefTerm.narrowerTerms, function(identifier) {
-							var oNarrower = oTermsMap[identifier];
+                    if (oRefTerm.narrowerTerms && oRefTerm.narrowerTerms.length > 0) {
+                        angular.forEach(oRefTerm.narrowerTerms, function(identifier) {
+                            var oNarrower = oTermsMap[identifier];
 
-							if (oNarrower) {
-								oBroader.narrowerTerms = oBroader.narrowerTerms || [];
-								oNarrower.broaderTerms = oNarrower.broaderTerms || [];
+                            if (oNarrower) {
+                                oBroader.narrowerTerms = oBroader.narrowerTerms || [];
+                                oNarrower.broaderTerms = oNarrower.broaderTerms || [];
 
-								oBroader.narrowerTerms.push(oNarrower);
-								oNarrower.broaderTerms.push(oBroader);
-							}
-						});
-					}
-				}
+                                oBroader.narrowerTerms.push(oNarrower);
+                                oNarrower.broaderTerms.push(oBroader);
+                            }
+                        });
+                    }
+                }
 
-				return Enumerable.from(oTerms).where("o=>!o.broaderTerms").toArray();
-			}
-		}
-	}]);
+                return Enumerable.from(oTerms).where("o=>!o.broaderTerms").toArray();
+            }
+        }
+    }]);
 
 
-	app.factory('guid', function() {
-		function S4() {
-			return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-		}
-		return function() {
-			return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
-		}
-	});
+    app.factory('guid', function() {
+        function S4() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
+        return function() {
+            return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
+        }
+    });
 
 })(window, window.angular);
