@@ -236,11 +236,22 @@ define(['app'], function(app) {
             currentUser = user || undefined;
             $rootScope.user = user || anonymous();
         }
+        
+        //============================================================
+        //
+        //
+        //============================================================
+        function isEmailVerified() {
+            var user = getUser();
+            return (user && user.isAuthenticated && user.isEmailVerified) ;
+
+        }
 
         return {
             getUser: getUser,
             signIn: signIn,
             signOut: signOut,
+            isEmailVerified:isEmailVerified
         };
 
     }]);
