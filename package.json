@@ -1,6 +1,6 @@
 {
   "name": "scbd-angularjs-services",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SCBD Angularjs services",
   "main": "scbd-filters.js",
   "scripts": {
