@@ -1,4 +1,4 @@
-define(['require', 'app', 'angular', 'angular-route'], function(require, app, angular) { 'use strict';
+define(['require', 'app', 'angular', 'ngRoute', 'authentication'], function(require, app, angular) { 'use strict';
 
     var baseUrl = require.toUrl('');
 
@@ -36,6 +36,10 @@ define(['require', 'app', 'angular', 'angular-route'], function(require, app, an
                 ext.resolve.controller = resolveController(templateModule);
             }
 
+            if(route.resolveUser) {
+                ext.resolve.user = resolveUser();
+            }
+
             return __when(path, angular.extend(route, ext));
         }
 
@@ -45,8 +49,10 @@ define(['require', 'app', 'angular', 'angular-route'], function(require, app, an
         //********************************************************************************
 
         function changeExtension(path, ext) {
+
             return path.replace(/(\.[a-z0-9]+$)/gi, ext);
         }
+
 
         //============================================================
         //
@@ -62,6 +68,19 @@ define(['require', 'app', 'angular', 'angular-route'], function(require, app, an
             return $injector.instantiate(controller, locals);
         }
         proxy.$inject = ['$injector', '$scope', '$route', 'controller'];
+
+        //============================================================
+        //
+        //
+        //============================================================
+        function resolveUser() {
+            return ['$q', '$rootScope', 'authentication', function($q, $rootScope, authentication) {
+                return $q.when(authentication.getUser()).then(function (user) {
+                    $rootScope.user = user;
+                    return user;
+                });
+            }];
+        }
 
         //============================================================
         //
