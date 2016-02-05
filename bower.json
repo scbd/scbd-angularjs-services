@@ -19,10 +19,9 @@
     "test",
     "tests"
   ],
-   "dependencies": {
-   "angularjs"        : "1.4.8",
+  "dependencies": {
+     "angularjs"        : "~1.4.0",
 	 "linqjs"           : "latest",
-   "lodash"           : "3.9.3",
-   "moment"           : "2.11.1"
+     "underscore"       : "latest"
   }
 }
