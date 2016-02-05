@@ -4,9 +4,12 @@ define(['app'], function(app) {
     //
     //
     //============================================================
-    app.filter("stringToJSON", function() {
-        return function(strValue) {
-            return JSON.parse(strValue);
+     app.filter('range', function() {
+        return function(input, total) {
+            total = parseInt(total);
+            for (var i = 0; i < total; i++)
+                input.push(i);
+            return input;
         };
     });
 });
