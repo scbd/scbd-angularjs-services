@@ -1,43 +1,43 @@
 ﻿define(['app'], function(app) {
     'use strict';
-    
+
     app.factory("IStorage", ["$http", "$q", "authentication", "realm", function($http, $q, authentication, defaultRealm) {
         //		return new function()
         //		{
         var serviceUrls = { // Add Https if not .local
             documentQueryUrl: function() {
-                return "/api/v2013/documents/";
+                return "https://api.cbd.int/api/v2013/documents/";
             },
             documentUrl: function() {
-                return "/api/v2013/documents/:identifier";
+                return "https://api.cbd.int/api/v2013/documents/:identifier";
             },
             validateUrl: function() {
-                return "/api/v2013/documents/x/validate";
+                return "https://api.cbd.int/api/v2013/documents/x/validate";
             },
             draftUrl: function() {
-                return "/api/v2013/documents/:identifier/versions/draft";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/versions/draft";
             },
             attachmentUrl: function() {
-                return "/api/v2013/documents/:identifier/attachments/:filename";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/attachments/:filename";
             },
             securityUrl: function() {
-                return "/api/v2013/documents/:identifier/securities/:operation";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/securities/:operation";
             },
             draftSecurityUrl: function() {
-                return "/api/v2013/documents/:identifier/versions/draft/securities/:operation";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/versions/draft/securities/:operation";
             },
             draftLockUrl: function() {
-                return "/api/v2013/documents/:identifier/versions/draft/locks/:lockID";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/versions/draft/locks/:lockID";
             },
             documentVersionUrl: function() {
-                return "/api/v2013/documents/:identifier/versions";
+                return "https://api.cbd.int/api/v2013/documents/:identifier/versions";
             },
 
             documentBodyQueryUrl: function() {
-                return "/api/v2013/documents/query/body";
+                return "https://api.cbd.int/api/v2013/documents/query/body";
             },
             documentFacetsQueryUrl: function() {
-                return "/api/v2013/documents/query/facets";
+                return "https://api.cbd.int/api/v2013/documents/query/facets";
             },
         };
 
