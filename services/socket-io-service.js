@@ -4,7 +4,7 @@ define(['app', 'socket.io', './authentication'], function (app, io) {
     function ($rootScope, $http, $q, realm, authentication) {
         return new function () {
             var apiServer = 'https://api.cbd.int/';
-                apiServer = 'http://localhost:8000/';
+                //apiServer = 'http://localhost:8000/';
 
             var socket;
 
