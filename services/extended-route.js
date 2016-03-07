@@ -67,6 +67,19 @@ define(['require', 'app', 'angular', 'angular-route'], function(require, app, an
         //
         //
         //============================================================
+        function resolveUser() {
+            return ['$rootScope', 'authentication', function($rootScope, authentication) {
+                return authentication.getUser().then(function (user) {
+//                    console.log('route',user);
+                    return user;
+                });
+            }];
+        }
+
+        //============================================================
+        //
+        //
+        //============================================================
         function resolveController(controllerModule) {
 
             return ['$q', function($q) {
