@@ -23,7 +23,7 @@ define(['app'], function(app) {
         //
         //===========================
         function get(id) {
-            return $http.get("https://api.cbd.int/api/v2013/workflows" + id).then(
+            return $http.get("https://api.cbd.int/api/v2013/workflows/" + id).then(
                 function(resp) {
                     return resp.data;
                 });
@@ -33,7 +33,7 @@ define(['app'], function(app) {
         //
         //===========================
         function updateActivity(id, activityName, data) {
-            return $http.put("https://api.cbd.int/api/v2013/workflows" + id + "/activities/" + activityName, data).then(
+            return $http.put("https://api.cbd.int/api/v2013/workflows/" + id + "/activities/" + activityName, data).then(
                 function(resp) {
                     return resp.data;
                 });
@@ -42,7 +42,7 @@ define(['app'], function(app) {
         //
         //===========================
         function cancel(id, data) {
-            return $http.delete("https://api.cbd.int/api/v2013/workflows" + id, {
+            return $http.delete("https://api.cbd.int/api/v2013/workflows/" + id, {
                 params: data
             }).then(
                 function(resp) {
@@ -53,7 +53,7 @@ define(['app'], function(app) {
         //
         //===========================
         function cancelActivity(id, activityName, data) {
-            return $http.delete("https://api.cbd.int/api/v2013/workflows" + id + "/activities/" + activityName, data).then(
+            return $http.delete("https://api.cbd.int/api/v2013/workflows/" + id + "/activities/" + activityName, data).then(
                 function(resp) {
                     return resp.data;
                 });

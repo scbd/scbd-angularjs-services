@@ -23,7 +23,7 @@ define(['app'], function(app) {
         //
         //===========================
         function get(id) {
-            return $http.get("https://api.cbd.int/api/v2015/user-notifications" + id, {
+            return $http.get("https://api.cbd.int/api/v2015/user-notifications/" + id, {
                 ignoreLoadingBar: true
             }).then(
                 function(resp) {
@@ -35,7 +35,7 @@ define(['app'], function(app) {
         //
         //===========================
         function update(id, data) {
-            return $http.put("https://api.cbd.int/api/v2015/user-notifications" + id, data).then(
+            return $http.put("https://api.cbd.int/api/v2015/user-notifications/" + id, data).then(
                 function(resp) {
                     return resp.data;
                 });
@@ -45,7 +45,7 @@ define(['app'], function(app) {
         //
         //===========================
         function deleteNotification(id) {
-            return $http.delete("https://api.cbd.int/api/v2015/user-notifications" + id).then(
+            return $http.delete("https://api.cbd.int/api/v2015/user-notifications/" + id).then(
                 function(resp) {
                     return resp.data;
                 });
