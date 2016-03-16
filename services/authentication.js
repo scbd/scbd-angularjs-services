@@ -139,7 +139,7 @@ define(['app'], function(app) {
                     return anonymous();
                 }
 
-                return $http.get('https://api.cbd.int/api/v2013/authentication/user', {
+                return $http.get('/api/v2013/authentication/user', {
                     headers: {
                         Authorization: "Ticket " + token
                     }
@@ -165,7 +165,7 @@ define(['app'], function(app) {
         //============================================================
         function signIn(email, password) {
 
-            return $http.post("https://api.cbd.int/api/v2013/authentication/token", {
+            return $http.post("/api/v2013/authentication/token", {
 
                 "email": email,
                 "password": password
@@ -174,7 +174,7 @@ define(['app'], function(app) {
 
                 var token = res.data;
 
-                return $q.all([token, $http.get('https://api.cbd.int/api/v2013/authentication/user', {
+                return $q.all([token, $http.get('/api/v2013/authentication/user', {
                     headers: {
                         Authorization: "Ticket " + token.authenticationToken
                     }
