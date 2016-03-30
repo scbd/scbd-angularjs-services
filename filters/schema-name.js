@@ -27,7 +27,7 @@ define(['app'], function(app) {
     if(schema.toLowerCase()=="news"						 ) return "News";
     if(schema.toLowerCase()=="new"						 ) return "What's New";
     if(schema.toLowerCase()=="statmente"				 ) return "Statement";
-    if(schema.toLowerCase()=="absnationalreport"		 ) return "National Report";
+    if(schema.toLowerCase()=="absnationalreport"		 ) return "Interim National Report on the Implementation of the Nagoya Protocol";
     if(schema.toLowerCase()=="modelcontractualclause"	 ) return "Model Contractual Clauses, Codes of Conduct, Guidelines, Best Practices and/or Standards";
     if(schema.toLowerCase()=="communityprotocol"		 ) return "Community Protocol and Procedures and Customary Law";
     if(schema.toLowerCase()=="meeting"					 ) return "Meeting";
