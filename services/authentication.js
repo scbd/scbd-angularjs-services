@@ -1,8 +1,9 @@
-define(['app'], function(app) {
+define(['app', './apiUrl'], function(app) {
 
-    app.factory('apiToken', ["$q", "$rootScope", "$window", "$document", function($q, $rootScope, $window, $document) {
+    app.factory('apiToken', ["$q", "$rootScope", "$window", "$document", "apiUrl", function($q, $rootScope, $window, $document, apiUrl) {
 
         var pToken;
+        var ACCOUNTS_URL = apiUrl.devAccountsUrl() || 'https://accounts.cbd.int';
 
         //============================================================
         //
@@ -20,12 +21,12 @@ define(['app'], function(app) {
                 return $q.when(pToken || null);
             }
 
-            pToken = null;
+            pToken = null
 
             var defer = $q.defer();
 
             var receiveMessage = function(event) {
-                if (event.origin != 'https://accounts.cbd.int')
+                if (event.origin != ACCOUNTS_URL)
                     return;
 
                 var message = JSON.parse(event.data);
@@ -67,7 +68,7 @@ define(['app'], function(app) {
 
             authenticationFrame.contentWindow.postMessage(JSON.stringify({
                 type: 'getAuthenticationToken'
-            }), 'https://accounts.cbd.int');
+            }), ACCOUNTS_URL);
 
             return pToken;
         }
@@ -90,7 +91,7 @@ define(['app'], function(app) {
                     authenticationEmail: email
                 };
 
-                authenticationFrame.contentWindow.postMessage(JSON.stringify(msg), 'https://accounts.cbd.int');
+                authenticationFrame.contentWindow.postMessage(JSON.stringify(msg), ACCOUNTS_URL);
             }
 
             if (email) {
@@ -255,7 +256,9 @@ define(['app'], function(app) {
         };
 
     }]);
-    app.factory('authenticationHttpIntercepter', ["$q", "apiToken", "$rootScope", function($q, apiToken, $rootScope) {
+
+    app.factory('authenticationHttpIntercepter', ["$q", "apiToken",
+     function($q, apiToken) {
 
         return {
             request: function(config) {
@@ -321,9 +324,26 @@ define(['app'], function(app) {
         };
     }]);
 
+    app.factory('apiURLHttpIntercepter', ["apiUrl", function(apiUrl) {
+
+            return {
+                request: function(config) {
+
+                    if(config.url.startsWith('/api/')){
+                        var devUrl = apiUrl.devApiUrl();
+                        if(devUrl)
+                            config.url =  devUrl + config.url;
+                    }
+
+                    return config;
+                }
+            };
+        }
+    ]);
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.interceptors.push('authenticationHttpIntercepter');
         $httpProvider.interceptors.push('realmHttpIntercepter');
+        $httpProvider.interceptors.push('apiURLHttpIntercepter');
     }]);
 
 });
