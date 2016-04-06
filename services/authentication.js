@@ -1,9 +1,8 @@
-define(['app', './apiUrl'], function(app) {
+define(['app'], function(app) {
 
-    app.factory('apiToken', ["$q", "$rootScope", "$window", "$document", "apiUrl", function($q, $rootScope, $window, $document, apiUrl) {
+    app.factory('apiToken', ["$q", "$rootScope", "$window", "$document", function($q, $rootScope, $window, $document) {
 
         var pToken;
-        var ACCOUNTS_URL = apiUrl.devAccountsUrl() || 'https://accounts.cbd.int';
 
         //============================================================
         //
@@ -21,12 +20,12 @@ define(['app', './apiUrl'], function(app) {
                 return $q.when(pToken || null);
             }
 
-            pToken = null
+            pToken = null;
 
             var defer = $q.defer();
 
             var receiveMessage = function(event) {
-                if (event.origin != ACCOUNTS_URL)
+                if (event.origin != 'https://accounts.cbd.int')
                     return;
 
                 var message = JSON.parse(event.data);
@@ -68,7 +67,7 @@ define(['app', './apiUrl'], function(app) {
 
             authenticationFrame.contentWindow.postMessage(JSON.stringify({
                 type: 'getAuthenticationToken'
-            }), ACCOUNTS_URL);
+            }), 'https://accounts.cbd.int');
 
             return pToken;
         }
@@ -91,7 +90,7 @@ define(['app', './apiUrl'], function(app) {
                     authenticationEmail: email
                 };
 
-                authenticationFrame.contentWindow.postMessage(JSON.stringify(msg), ACCOUNTS_URL);
+                authenticationFrame.contentWindow.postMessage(JSON.stringify(msg), 'https://accounts.cbd.int');
             }
 
             if (email) {
@@ -256,17 +255,16 @@ define(['app', './apiUrl'], function(app) {
         };
 
     }]);
-
-    app.factory('authenticationHttpIntercepter', ["$q", "apiToken",
-     function($q, apiToken) {
+    app.factory('authenticationHttpIntercepter', ["$q", "apiToken", "$rootScope", function($q, apiToken, $rootScope) {
 
         return {
             request: function(config) {
 
                 var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
+                /^https:\/\/eunomia.cbd.int\//i.test(config.url) ||
                     /^https:\/\/localhost[:\/]/i.test(config.url) ||
                     /^\/\w+/i.test(config.url);
-
+ 
                 var hasAuthorization = (config.headers || {}).hasOwnProperty('Authorization') ||
                     (config.headers || {}).hasOwnProperty('authorization');
 
@@ -324,26 +322,9 @@ define(['app', './apiUrl'], function(app) {
         };
     }]);
 
-    app.factory('apiURLHttpIntercepter', ["apiUrl", function(apiUrl) {
-
-            return {
-                request: function(config) {
-
-                    if(config.url.startsWith('/api/')){
-                        var devUrl = apiUrl.devApiUrl();
-                        if(devUrl)
-                            config.url =  devUrl + config.url;
-                    }
-
-                    return config;
-                }
-            };
-        }
-    ]);
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.interceptors.push('authenticationHttpIntercepter');
         $httpProvider.interceptors.push('realmHttpIntercepter');
-        $httpProvider.interceptors.push('apiURLHttpIntercepter');
     }]);
 
 });
