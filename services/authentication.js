@@ -2,7 +2,7 @@ define(['app', './apiUrl'], function(app) {
 
     app.factory('apiToken', ["$q", "$rootScope", "$window", "$document", "apiUrl", function($q, $rootScope, $window, $document, apiUrl) {
 
-        var domain = $document.location.hostname.replace(/^[^\.]+\./, '');
+        var domain = document.location.hostname.replace(/^[^\.]+\./, '');
 
         var pToken;
         var ACCOUNTS_URL = apiUrl.devAccountsUrl() || 'https://accounts.'+domain;
