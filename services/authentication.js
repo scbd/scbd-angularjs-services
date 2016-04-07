@@ -261,14 +261,13 @@ define(['app'], function(app) {
             request: function(config) {
 
                 var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
-                /^https:\/\/eunomia.cbd.int\//i.test(config.url) ||
                     /^https:\/\/localhost[:\/]/i.test(config.url) ||
                     /^\/\w+/i.test(config.url);
 
                 var hasAuthorization = (config.headers || {}).hasOwnProperty('Authorization') ||
                     (config.headers || {}).hasOwnProperty('authorization');
 
-                if ( hasAuthorization) // no need to alter config
+                if (  !trusted || hasAuthorization) // no need to alter config
                     return config;
 
                 //Add token to http headers
