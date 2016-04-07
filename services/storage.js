@@ -51,7 +51,7 @@
             //===========================
             //
             //===========================
-            "query": function(query, collection, params) {
+            "query": function(query, collection, params, config) {
                 params = angular.extend({}, params || {});
                 params.collection = collection;
                 params.$filter = query;
@@ -63,10 +63,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentQueryUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -74,7 +71,7 @@
             //===========================
             //
             //===========================
-            "get": function(identifier, params) {
+            "get": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
@@ -82,10 +79,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
 
@@ -94,7 +88,7 @@
             //===========================
             //
             //===========================
-            "exists": function(identifier, params) {
+            "exists": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
@@ -102,10 +96,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentUrl(), params);
 
-                return $http.head(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                }).then(function() {
+                return $http.head(oTrans.url, getConfig(config, oTrans.params, useCache)).then(function() {
 
                     return true;
 
@@ -121,18 +112,17 @@
             //===========================
             //
             //===========================
-            "put": function(identifier, data, params) {
+            "put": function(identifier, data, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
+                var useCache = !!params.cache;
                 if (!params.schema && data && data.header && data.header.schema)
                     params.schema = data.header.schema;
 
                 var oTrans = transformPath(serviceUrls.documentUrl(), params);
 
-                return $http.put(oTrans.url, data, {
-                    "params": oTrans.params
-                }).then(function(result) {
+                return $http.put(oTrans.url, data, getConfig(config, oTrans.params, useCache)).then(function(result) {
                     return result.data;
                 });
             },
@@ -140,31 +130,27 @@
             //===========================
             //
             //===========================
-            "delete": function(identifier, params) {
+            "delete": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
-
+                var useCache = !!params.cache;
                 var oTrans = transformPath(serviceUrls.documentUrl(), params);
 
-                return $http.delete(oTrans.url, {
-                    "params": oTrans.params
-                });
+                return $http.delete(oTrans.url, getConfig(config, oTrans.params, useCache));
             },
 
             //===========================
             //
             //===========================
-            "validate": function(document, params) {
+            "validate": function(document, params, config) {
                 params = clone(params || {});
 
                 if (!params.schema && document && document.header && document.header.schema)
                     params.schema = document.header.schema;
-
+                var useCache = !!params.cache;
                 var oTrans = transformPath(serviceUrls.validateUrl(), params);
 
-                return $http.put(oTrans.url, document, {
-                    "params": oTrans.params
-                });
+                return $http.put(oTrans.url, document, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -173,16 +159,16 @@
             //
             //===========================
             "security": {
-                canCreate: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.securityUrl(), "create", identifier, schema, metadata);
+                canCreate: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.securityUrl(), "create", identifier, schema, metadata, config);
                 },
 
-                canUpdate: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.securityUrl(), "update", identifier, schema, metadata);
+                canUpdate: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.securityUrl(), "update", identifier, schema, metadata, config);
                 },
 
-                canDelete: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.securityUrl(), "delete", identifier, schema, metadata);
+                canDelete: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.securityUrl(), "delete", identifier, schema, metadata, config);
                 }
             }
         };
@@ -197,7 +183,7 @@
             //===========================
             //
             //===========================
-            "query": function(query, params) {
+            "query": function(query, params, config) {
                 params = clone(params || {});
                 params.collection = "mydraft";
                 params.$filter = query;
@@ -206,10 +192,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentQueryUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -218,7 +201,7 @@
             //===========================
             //
             //===========================
-            "get": function(identifier, params) {
+            "get": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
@@ -229,10 +212,7 @@
 
                 var oTrans = transformPath(serviceUrls.draftUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -240,7 +220,7 @@
             //===========================
             //
             //===========================
-            "exists": function(identifier, params) {
+            "exists": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
@@ -248,10 +228,7 @@
 
                 var oTrans = transformPath(serviceUrls.draftUrl(), params);
 
-                return $http.head(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                }).then(function() {
+                return $http.head(oTrans.url, getConfig(config, oTrans.params, useCache)).then(function() {
 
                     return true;
 
@@ -267,18 +244,16 @@
             //===========================
             //
             //===========================
-            "put": function(identifier, data, params) {
+            "put": function(identifier, data, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
                 if (!params.schema && data && data.header && data.header.schema)
                     params.schema = data.header.schema;
-
+                var useCache = !!params.cache;
                 var oTrans = transformPath(serviceUrls.draftUrl(), params);
 
-                return $http.put(oTrans.url, data, {
-                    "params": oTrans.params
-                }).then(function(result) {
+                return $http.put(oTrans.url, data, getConfig(config, oTrans.params, useCache)).then(function(result) {
                     return result.data;
                 });
             },
@@ -286,15 +261,13 @@
             //===========================
             //
             //===========================
-            "delete": function(identifier, params) {
+            "delete": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
-
+                var useCache = !!params.cache;
                 var oTrans = transformPath(serviceUrls.draftUrl(), params);
 
-                return $http.delete(oTrans.url, {
-                    "params": oTrans.params
-                });
+                return $http.delete(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -303,16 +276,16 @@
             //
             //===========================
             "security": {
-                canCreate: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.draftSecurityUrl(), "create", identifier, schema, metadata);
+                canCreate: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.draftSecurityUrl(), "create", identifier, schema, metadata, config);
                 },
 
-                canUpdate: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.draftSecurityUrl(), "update", identifier, schema, metadata);
+                canUpdate: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.draftSecurityUrl(), "update", identifier, schema, metadata, config);
                 },
 
-                canDelete: function(identifier, schema, metadata) {
-                    return canDo(serviceUrls.draftSecurityUrl(), "delete", identifier, schema, metadata);
+                canDelete: function(identifier, schema, metadata, config) {
+                    return canDo(serviceUrls.draftSecurityUrl(), "delete", identifier, schema, metadata, config);
                 }
             },
 
@@ -321,7 +294,7 @@
                 //===========================
                 //
                 //===========================
-                "get": function(identifier, params) {
+                "get": function(identifier, params, config) {
                     params = clone(params || {});
                     params.identifier = identifier;
 
@@ -329,10 +302,9 @@
 
                     var oTrans = transformPath(serviceUrls.draftLockUrl(), params);
 
-                    return $http.get(oTrans.url, {
-                        params: oTrans.params,
-                        cache: useCache
-                    });
+
+
+                    return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                     //TODO: return result.data;
 
@@ -340,7 +312,7 @@
                 //===========================
                 //
                 //===========================
-                "exists": function(identifier, params) {
+                "exists": function(identifier, params, config) {
                     params = clone(params || {});
                     params.identifier = identifier;
 
@@ -348,10 +320,7 @@
 
                     var oTrans = transformPath(serviceUrls.draftLockUrl(), params);
 
-                    return $http.head(oTrans.url, {
-                        params: oTrans.params,
-                        cache: useCache
-                    }).then(function() {
+                    return $http.head(oTrans.url, getConfig(config, oTrans.params, useCache)).then(function() {
 
                         return true;
 
@@ -367,15 +336,13 @@
                 //===========================
                 //
                 //===========================
-                "put": function(identifier, params) {
+                "put": function(identifier, params, config) {
                     params = clone(params || {});
                     params.identifier = identifier;
-
+                    var useCache = !!params.cache;
                     var oTrans = transformPath(serviceUrls.draftLockUrl(), params);
                     var data = null;
-                    return $http.put(oTrans.url, data, {
-                        "params": oTrans.params
-                    }).then(function(result) {
+                    return $http.put(oTrans.url, data, getConfig(config, oTrans.params, useCache)).then(function(result) {
                         return result.data;
                     });
                 },
@@ -385,15 +352,15 @@
                 // Not tested
                 //
                 //===========================
-                "delete": function(identifier, lockID) {
+                "delete": function(identifier, lockID, config) {
                     var params = {
                         identifier: identifier,
                         lockID: lockID
                     };
-
+                    var useCache = !!params.cache;
                     var oTrans = transformPath(serviceUrls.draftLockUrl(), params);
 
-                    return $http.delete(oTrans.url).then(function(success) {
+                    return $http.delete(oTrans.url, getConfig(config, oTrans.params, useCache)).then(function(success) {
                         return success.data;
                     });
                 }
@@ -452,7 +419,7 @@
             //===========================
             //
             //===========================
-            "get": function(identifier, params) {
+            "get": function(identifier, params, config) {
                 params = clone(params || {});
                 params.identifier = identifier;
 
@@ -461,10 +428,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentVersionUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
 
@@ -481,7 +445,7 @@
             //===========================
             //
             //===========================
-            "body": function(filter, query, params) {
+            "body": function(filter, query, params, config) {
                 params = angular.extend({}, params || {});
                 params.query = query;
                 params.$filter = filter;
@@ -490,10 +454,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentBodyQueryUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             },
@@ -501,7 +462,7 @@
             //===========================
             //
             //===========================
-            "facets": function(filter, params) {
+            "facets": function(filter, params, config) {
                 params = angular.extend({}, params || {});
                 params.$filter = filter;
 
@@ -509,10 +470,7 @@
 
                 var oTrans = transformPath(serviceUrls.documentFacetsQueryUrl(), params);
 
-                return $http.get(oTrans.url, {
-                    params: oTrans.params,
-                    cache: useCache
-                });
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
                 //TODO: return result.data;
             }
@@ -607,7 +565,7 @@
         // Calls storage security
         //
         //===========================
-        var canDo = function(patternPath, operation, identifier, schema, metadata) {
+        var canDo = function(patternPath, operation, identifier, schema, metadata, config) {
 
             metadata = angular.extend({}, {
                 "schema": schema
@@ -631,11 +589,10 @@
                     "metadata": metadata
                 };
 
+                var useCache = !!params.cache;
                 var oTrans = transformPath(patternPath, params);
 
-                return $http.get(oTrans.url, {
-                    "params": oTrans.params
-                })
+                return $http.get(oTrans.url, getConfig(config, oTrans.params, useCache));
 
             }).then(function(res) {
 
@@ -652,6 +609,14 @@
         var replaceAt = function(str, index, len, newText) {
             return str.substring(0, index) + newText + str.substring(index + len);
         };
+
+        function getConfig(config, params, useCache){
+            config = angular.copy(config) || {};
+
+            config.params = angular.extend(config.params||{}, params||{});
+            config.cache  = useCache;
+            return config;
+        }
 
         return this;
         //		}();

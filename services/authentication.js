@@ -306,7 +306,9 @@ define(['app', './apiUrl'], function(app) {
         return {
             request: function(config) {
 
-                if(config.headers && config.headers.realm)
+
+
+                if((config.headers || {}).hasOwnProperty('realm'))
                     return config;
 
                 var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
@@ -330,7 +332,7 @@ define(['app', './apiUrl'], function(app) {
                 request: function(config) {
 
                     if(config.url.startsWith('/api/')){
-                        var devUrl = apiUrl.devApiUrl();
+                        var devUrl = apiUrl.devApiUrl(config.url);
                         if(devUrl)
                             config.url =  devUrl + config.url;
                     }
