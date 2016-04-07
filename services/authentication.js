@@ -312,6 +312,7 @@ define(['app', './apiUrl'], function(app) {
                     return config;
 
                 var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
+                /^https:\/\/eunomia.cbd.int\//i.test(config.url) ||
                     /^https:\/\/localhost[:\/]/i.test(config.url) ||
                     /^\/\w+/i.test(config.url);
 
