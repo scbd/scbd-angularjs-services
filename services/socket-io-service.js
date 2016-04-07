@@ -1,9 +1,13 @@
-define(['app', 'socket.io', './authentication'], function (app, io) {
+define(['app', 'socket.io', './authentication', './apiUrl'], function (app, io) {
 
-    app.factory('socketioService', ['$rootScope', '$http', '$q', 'realm', "authentication",
-    function ($rootScope, $http, $q, realm, authentication) {
+    app.factory('socketioService', ['$rootScope', '$http', '$q', 'realm', "authentication", "apiUrl",
+    function ($rootScope, $http, $q, realm, authentication, apiUrl) {
         return new function () {
             var apiServer = 'https://api.cbd.int/';
+
+            if(apiUrl.isAppDevelopment()){
+                apiServer = apiUrl.devApiUrl();
+            }
 
             var socket;
 
