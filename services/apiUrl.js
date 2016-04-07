@@ -4,7 +4,7 @@ define(['app'], function(app) {
 
 
             function devApiUrl(url) {
-                return;
+                // return;
 
                 //for request which migh have http://api.cbd.int/api/v2015/countries for example should not be considered development
                 var trusted = /^https:\/\/api.cbd.int\//i.test(url)
@@ -18,7 +18,7 @@ define(['app'], function(app) {
             }
 
             function devAccountsUrl() {
-                return;
+                // return;
                 if (isAppDevelopment())
                     return 'https://accounts.cbddev.xyz';
             }
