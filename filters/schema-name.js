@@ -12,7 +12,7 @@ define(['app'], function(app) {
 
         if(!schema)
           return schema;
-    if(schema.toLowerCase()=="focalpoint"				 ) return "National ABS Focal Point";
+    if(schema.toLowerCase()=="focalpoint"				 ) return "ABS National Focal Point";
     if(schema.toLowerCase()=="authority"				 ) return "Competent National Authority";
     if(schema.toLowerCase()=="contact"					 ) return "Contact";
     if(schema.toLowerCase()=="database"					 ) return "National Website or Database";
