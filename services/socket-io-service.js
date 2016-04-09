@@ -6,7 +6,11 @@ define(['app', 'socket.io', './authentication', './apiUrl'], function (app, io) 
             var apiServer = 'https://api.cbd.int/';
 
             if(apiUrl.isAppDevelopment()){
-                apiServer = apiUrl.devApiUrl();
+                
+                var url = apiUrl.devApiUrl();
+                if(url)
+                   apiServer = url;
+                //apiServer = apiUrl.devApiUrl();
             }
 
             var socket;
