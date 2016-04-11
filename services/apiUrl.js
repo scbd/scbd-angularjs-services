@@ -23,11 +23,13 @@ define(['app'], function(app) {
                     return 'https://accounts.cbddev.xyz';
             }
 
+
+            // /^https:\/\/accounts.cbddev.xyz\//i,
+            // /^https:\/\/absch.cbddev.xyz\//i,
+            // /^https:\/\/chm.cbddev.xyz\//i,
             function isAppDevelopment() {
                 var knownDevUrls = [
-                    /^https:\/\/accounts.cbddev.xyz\//i,
-                    /^https:\/\/absch.cbddev.xyz\//i,
-                    /^https:\/\/chm.cbddev.xyz\//i,
+                    /^https:\/\/\w+.cbddev.xyz\//i, //everything under cbddev.xyz
                     /^http:\/\/localhost[:\/]/i
                 ];
 
