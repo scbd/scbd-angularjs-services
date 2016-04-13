@@ -32,8 +32,8 @@ define(['app'], function(app) {
     if(schema.toLowerCase()=="communityprotocol"		 ) return "Community Protocol and Procedures and Customary Law";
     if(schema.toLowerCase()=="meeting"					 ) return "Meeting";
     if(schema.toLowerCase()=="notification"				 ) return "Notification";
-    if(schema.toLowerCase()=="capacitybuildinginitiative") return "Capacity Building Initiative";
-    if(schema.toLowerCase()=="capacitybuildingresource"  ) return "Capacity Building Resource";
+    if(schema.toLowerCase()=="capacitybuildinginitiative") return "Capacity-building Initiative";
+    if(schema.toLowerCase()=="capacitybuildingresource"  ) return "Capacity-building Resource";
     if(schema.toLowerCase()=="endorsement"				) return "Endorsements";
         // return schema;
       };
