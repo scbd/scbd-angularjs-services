@@ -336,7 +336,10 @@ define(['app', './apiUrl'], function(app) {
 
                     var isProdutionApi = /^https:\/\/api.cbd.int\//i.test(config.url)
 
-                    if(isProdutionApi && apiUrl.isAppDevelopment()){
+                    var isDev = apiUrl.isAppDevelopment();
+
+                    if(config.url.indexOf('/api/')>=0 && ((isProdutionApi && isDev) || isDev)){
+
 
                         var devUrl = apiUrl.devApiUrl(config.url);
                         if(devUrl)
