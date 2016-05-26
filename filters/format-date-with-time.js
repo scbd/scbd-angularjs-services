@@ -8,7 +8,7 @@ define(['app','moment'], function(app,moment) {
         return function(date, formart) {
             if (formart === undefined)
                 formart = 'DD MMM YYYY hh:mm';
-            return moment.utc(date).format(formart);
+            return moment(date).format(formart);
         };
     });
 });
