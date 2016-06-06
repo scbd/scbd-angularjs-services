@@ -245,8 +245,12 @@ define(['app', './apiUrl'], function(app) {
         //
         //============================================================
         function isEmailVerified() {
-            var user = getUser();
-            return (user && user.isAuthenticated && user.isEmailVerified) ;
+            
+            return $q.when(getUser()).then(function(user) {
+
+               return (user && user.isAuthenticated && user.isEmailVerified) ;
+               
+            });
 
         }
 
