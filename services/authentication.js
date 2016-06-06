@@ -259,8 +259,8 @@ define(['app', './apiUrl'], function(app) {
 
     }]);
 
-    app.factory('authenticationHttpIntercepter', ["$q", "apiToken",
-     function($q, apiToken) {
+    app.factory('authenticationHttpIntercepter', ["$q", "apiToken", "$rootScope",
+     function($q, apiToken, $rootScope) {
 
         return {
             request: function(config) {
