@@ -29,24 +29,51 @@ define(['app', 'moment'], function (app, moment) {
   //
   //
   //============================================================
-  app.filter("formatDate", function () {
+  app.filter("formatDate", ["$filter", function ($filter) {
     return function (date, formart) {
       if (formart === undefined)
         formart = 'DD MMM YYYY';
-      return moment(date).format(formart);
+
+      return $filter("moment")(date, 'format',formart);
     };
-  });
+  }]);
 
   //============================================================
   //
   //
   //
   //============================================================
-  app.filter("formatDateWithTime", function () {
+  app.filter("formatDateWithTime", ["$filter", function ($filter) {
     return function (date, formart) {
       if (formart === undefined)
-        formart = 'DD MMM YYYY HH:MM';
-      return moment(date).format(formart);
+        formart = 'DD MMM YYYY HH:mm';
+
+      return $filter("moment")(date, 'format',formart);
+    };
+  }]);
+
+  //============================================================
+  //
+  //
+  //
+  //============================================================
+  app.filter('moment', [function() {
+
+        return function(datetime, method, arg1, arg2, arg3) {
+            return moment(datetime)[method](arg1, arg2, arg3);
+        };
+  }]);
+
+  //============================================================
+  //
+  //
+  //
+  //============================================================
+  app.filter("formatDateWithUtc", function () {
+    return function (date, formart) {
+      if (formart === undefined)
+        formart = 'DD MMM YYYY';
+      return moment.utc(date).format(formart);
     };
   });
   //============================================================
