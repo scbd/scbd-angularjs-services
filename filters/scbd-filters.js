@@ -293,6 +293,50 @@ define(['app', 'moment'], function (app, moment) {
 			if(schema.toLowerCase()=="capacitybuildinginitiative"   ) return "Capacity-building Initiative";
 			if(schema.toLowerCase()=="capacitybuildingresource"     ) return "Capacity-building Resource";
 			if(schema.toLowerCase()=="endorsement"				          ) return "Endorsement";
+
+      return schema;
+
+		};
+	}]);
+
+  //============================================================
+	//
+	//
+	//
+	//============================================================
+	app.filter("mapSchema", [function() {
+
+		return function( schema ) {
+
+			if(!schema)
+				return schema;
+
+			if(schema.toLowerCase()=="focalpoint"				   	      ) return "NFP";
+			if(schema.toLowerCase()=="authority"				   	      ) return "CNA";
+			if(schema.toLowerCase()=="contact"				   	 	      ) return "CON";
+			if(schema.toLowerCase()=="database"				   	 	      ) return "NDB";
+			if(schema.toLowerCase()=="resource"				   	 	      ) return "VLR";
+			if(schema.toLowerCase()=="organization"			   	      ) return "ORG";
+			if(schema.toLowerCase()=="measure" 				   	 	      ) return "MSR";
+			if(schema.toLowerCase()=="abscheckpoint"			 	      ) return "CP";
+			if(schema.toLowerCase()=="abscheckpointcommunique" 	  ) return "CPC";
+			if(schema.toLowerCase()=="abspermit"				          ) return "IRCC";
+      if(schema.toLowerCase()=="statement"				          ) return "ST";
+      if(schema.toLowerCase()=="notification"			   	      ) return "NT";
+      if(schema.toLowerCase()=="meeting"					          ) return "MT";
+      if(schema.toLowerCase()=="pressrelease"				        ) return "PR";
+      if(schema.toLowerCase()=="meetingdocument"    		    ) return "MTD";
+			if(schema.toLowerCase()=="news"						            ) return "NEWS";
+			if(schema.toLowerCase()=="new"						            ) return "NEW";
+			if(schema.toLowerCase()=="absnationalreport"		      ) return "NR";
+			if(schema.toLowerCase()=="modelcontractualclause"	    ) return "A19A20";
+			if(schema.toLowerCase()=="communityprotocol"		      ) return "CPP";
+			if(schema.toLowerCase()=="capacitybuildinginitiative" ) return "CBI";
+			if(schema.toLowerCase()=="capacitybuildingresource"   ) return "CBR";
+			if(schema.toLowerCase()=="endorsement"				        ) return "EDR";
+
+      return schema;
+      
 		};
 	}]);
 });
