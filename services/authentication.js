@@ -278,8 +278,13 @@ define(['app', './apiUrl'], function(app) {
 
         }
 
+        var sessionExpiredAlert = false
         $rootScope.$on('event:auth-sessionExpired', function(){
-            alert('your session has expired');
+            
+            if(!sessionExpiredAlert){
+                sessionExpiredAlert = true;
+                alert('your session has expired');                
+            }
             signOut();
         });
 
