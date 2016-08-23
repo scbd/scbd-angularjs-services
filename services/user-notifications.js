@@ -68,12 +68,24 @@ define(['app'], function(app) {
                 return resp.data;
             });
         }
+
+        //===========================
+        //
+        //===========================
+        function markAllRead(realm) {
+            return $http.put("/api/v2015/user-notifications/markallread", {realm : realm}).then(
+                function(resp) {
+                    return;
+                });
+        }
+
         return {
             create: create,
             get: get,
             update: update,
             delete: deleteNotification,
             query: query,
+            markAllRead : markAllRead
         };
     }]);
 
