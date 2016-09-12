@@ -386,10 +386,37 @@ define(['app', './apiUrl'], function(app) {
             };
         }
     ]);
+
+    app.factory('genericIntercepter', ["locale", function(locale) {
+
+            return {
+                request: function(config) {
+                    
+                    var trusted = /^https:\/\/api.cbd.int\//i.test(config.url) ||
+                                /^https:\/\/localhost[:\/]/i.test(config.url) ||
+                                /^\/\w+/i.test(config.url);
+
+                    var hasLanguageHeader = (config.headers || {}).hasOwnProperty('Preferred-Language');
+
+                    if (!trusted || hasLanguageHeader) // no need to alter config
+                        return config;
+
+                    if (!hasLanguageHeader) {
+                        config.headers = angular.extend(config.headers || {}, {
+                            'Preferred-Language': locale
+                        });
+                    }
+
+                    return config;
+                }
+            };
+        }
+    ]);
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.interceptors.push('authenticationHttpIntercepter');
         $httpProvider.interceptors.push('realmHttpIntercepter');
         $httpProvider.interceptors.push('apiURLHttpIntercepter');
+        $httpProvider.interceptors.push('genericIntercepter');
     }]);
 
 });
