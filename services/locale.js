@@ -4,7 +4,7 @@ define(['app'], function(app) { 'use strict';
 
         this.$get = ['$document', function($document) {
 
-            var matches = /Preferences=Locale=(\w{2,3})/g.exec($document[0].cookie);
+            var matches = /locale=(\w{2,3})/g.exec($document[0].cookie);
 
             if(matches)
                 return matches[1]; //

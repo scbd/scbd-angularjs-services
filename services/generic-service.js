@@ -52,13 +52,14 @@ define(['app'], function(app) {
         //===========================
         //
         //===========================
-        function query(version, schema, query, pageNumber, pageLength, count) {
+        function query(version, schema, query, pageNumber, pageLength, sort, count) {
             return $http.get("/api/"+version+"/"+schema, {
                 params: {
                     q: JSON.stringify(query),
                     sk: pageNumber,
                     l: pageLength,
-                    c: count
+                    c: count,
+                    s:sort
                 },
                 cache: false,
                 ignoreLoadingBar: true
